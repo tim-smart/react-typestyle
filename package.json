@@ -1,5 +1,5 @@
 {
-  "name": "react-typestyle",
+  "name": "@tim-smart/react-typestyle",
   "version": "1.0.0",
   "description": "A simple helper for using Typestyle with React",
   "main": "lib/index.js",
