@@ -1,4 +1,4 @@
-import React, { ComponentType, FC } from "react";
+import React, { ComponentType, FC, useMemo, useState } from "react";
 import { style } from "typestyle";
 import { NestedCSSProperties } from "typestyle/lib/types";
 
@@ -40,4 +40,14 @@ export function withStyles<P, S extends IStylesheet<P>>(
   };
 
   return Styled;
+}
+
+export function useWithStyles<P = {}>(
+  styles: IStylesheet<P>,
+  props: P = {} as P
+) {
+  return useMemo(() => buildClassNames(props, styles), [
+    props,
+    buildClassNames
+  ]);
 }
