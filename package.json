@@ -16,7 +16,9 @@
     "typestyle": "^2.0.2"
   },
   "scripts": {
-    "build": "tsc"
+    "clean": "rm -rf lib",
+    "build": "tsc",
+    "prepublishOnly": "npm run clean && npm run build"
   },
   "files": [
     "lib/"
