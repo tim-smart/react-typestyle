@@ -1,11 +1,13 @@
-import React, { ComponentType, FC, useMemo, useState } from "react";
+import React, { ComponentType, FC, useMemo } from "react";
 import { style } from "typestyle";
 import { NestedCSSProperties } from "typestyle/lib/types";
 
-type PropsToNestedCSSPropertiesFn<P> = (props: P) => NestedCSSProperties;
+type StylesheetValue = NestedCSSProperties | NestedCSSProperties[];
+
+type PropsToNestedCSSPropertiesFn<P> = (props: P) => StylesheetValue;
 
 export interface IStylesheet<P> {
-  [key: string]: NestedCSSProperties | PropsToNestedCSSPropertiesFn<P>;
+  [key: string]: StylesheetValue | PropsToNestedCSSPropertiesFn<P>;
 }
 
 export interface IClassNames {
@@ -17,11 +19,12 @@ function buildClassNames<P, S extends IStylesheet<P>>(props: P, styles: S) {
 
   Object.keys(styles).forEach(className => {
     const value = styles[className];
-    if (typeof value === "function") {
-      classNames[className] = style(value(props));
-    } else {
-      classNames[className] = style(value);
-    }
+    const styleProps: StylesheetValue =
+      typeof value === "function" ? value(props) : value;
+
+    classNames[className] = Array.isArray(styleProps)
+      ? style(...styleProps)
+      : style(styleProps);
   });
 
   return classNames as { [K in keyof S]: string };
