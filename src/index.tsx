@@ -45,8 +45,8 @@ export function withStyles<P, S extends IStylesheet<P>>(
   return Styled;
 }
 
-export function useWithStyles<P = {}>(
-  styles: IStylesheet<P>,
+export function useStyles<P = {}, S extends IStylesheet<P> = IStylesheet<P>>(
+  styles: S,
   props: P = {} as P
 ) {
   return useMemo(() => buildClassNames(props, styles), [
